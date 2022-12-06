@@ -102,22 +102,25 @@ useEffect(()=>{
    
         },
         y: {
-          
+          type: "category",
+          ticks:{
+            
+          }
         }
       },
       options: {
         scales: {
-          ticks: {
-            stepSize: 1,
-            precision: 0
-          }
+          // ticks: {
+          //   stepSize: 1,
+          //   precision: 0
+          // }
         }
       },
       bindto: "#dataStackNormalized"
     });
     chart.resize({
       width: 1000,
-      height: 300,
+      height: 400,
     })
     console.log(subCountsByCreators)
     console.log(creators)
@@ -126,16 +129,16 @@ useEffect(()=>{
 
   return (
     <div className="App">
-      {timeSlots.map((timeSlot, index)=>(
+      {/* {timeSlots.map((timeSlot, index)=>(
         <div key={index}>
           <h3>
-            {/* {timeSlot.map((submission)=>{
+            {timeSlot.map((submission)=>{
               return <div>{submission.creationTime} {submission.first_name}</div>
-            })} */}
+            })}
           </h3>
-          
         </div> 
-      ))}
+      ))} */}
+      <br></br>
       <div id='dataStackNormalized'></div>
     </div>
   );
