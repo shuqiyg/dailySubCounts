@@ -1,13 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import bb, {area, bar} from "billboard.js";
+import { Providers } from '@microsoft/mgt-element';
+import { Msal2Provider } from '@microsoft/mgt-msal2-provider';
+import {Login} from '@microsoft/mgt-react';
 import axios from 'axios';
 import './App.css';
 
-
+Providers.globalProvider = new Msal2Provider({
+  clientId: '25678cb4-b6d3-47d7-aa68-9661a11e3468'
+});
 
 function App() {
   let [dailyCounts, setDailyCounts] = useState([]);
-
   //create 10 different time slots, and generate an array of time of creating the submissions
   let timeSlots = [];
   let x = 0;
@@ -16,19 +20,19 @@ function App() {
     x++;
   }
 
+
   //group of submission creators
   let creators = [];
   //create counts per time slot for every creator
   let subCountsByCreators = [];
 
+  //fetch real time data(submission created time, creator) from submissionapi
   useEffect(()=>{
     axios.get("http://apps6.amfredericks.com/submissionapi/dailyCount")
   .then((response)=>{
     setDailyCounts(response.data);
   })
   },[])
-
-  // console.log('10:00:01' > '10:00:01');
 
   //loop through the fetched time data from apps6 API, poplulate the times for each array
   dailyCounts.forEach(submission=>{
@@ -86,15 +90,13 @@ function App() {
 useEffect(()=>{
     let columnX = ["x", "< 09:00", "09:00-09:59", "10:00-10:59", "11:00-11:59", "12:00-12:59", "13:00-13:59", "14:00-14:59", "15:00-15:59", "16:00-16:30", "> 16:30"];
     subCountsByCreators.unshift(columnX);
+    //generate the bar chart using billboard.js
     var chart = bb.generate({
       data: {
         x: "x",
         columns: subCountsByCreators,
         type: bar(), // for ESM specify as: bar()
         groups: [creators],
-        stack: {
-          // normalize: true
-        }
       },
       axis: {
         x: {
@@ -103,10 +105,27 @@ useEffect(()=>{
         },
         y: {
           type: "category",
-          ticks:{
-            
-          }
         }
+      },
+      tooltip:{
+        show: true,
+        format: {
+          title: ()=>{
+            return "Counts"
+          },
+          value: (value)=>{
+            if(value === 0){return}
+            return value
+          }
+        },
+      },
+       
+      legend:{
+        contents: {
+          bindto: "#legend",
+          template: "<span style='color:#fff;padding:10px;background-color:{=COLOR}'>{=TITLE}</span>"
+        },
+        padding: 20,   
       },
       options: {
         scales: {
@@ -119,9 +138,10 @@ useEffect(()=>{
       bindto: "#dataStackNormalized"
     });
     chart.resize({
-      width: 1000,
-      height: 400,
-    })
+      // width: 1000,
+      // height: 400,
+      auto: true,
+    });
     console.log(subCountsByCreators)
     console.log(creators)
 },[subCountsByCreators]);
@@ -129,17 +149,12 @@ useEffect(()=>{
 
   return (
     <div className="App">
-      {/* {timeSlots.map((timeSlot, index)=>(
-        <div key={index}>
-          <h3>
-            {timeSlot.map((submission)=>{
-              return <div>{submission.creationTime} {submission.first_name}</div>
-            })}
-          </h3>
-        </div> 
-      ))} */}
       <br></br>
       <div id='dataStackNormalized'></div>
+      <div id="legend"></div>
+      {/* <div>
+        <Login />
+      </div> */}
     </div>
   );
 }
