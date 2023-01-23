@@ -88,7 +88,7 @@ function App() {
 
 
 useEffect(()=>{
-    let columnX = ["x", "< 09:00", "09:00-09:59", "10:00-10:59", "11:00-11:59", "12:00-12:59", "13:00-13:59", "14:00-14:59", "15:00-15:59", "16:00-16:30", "> 16:30"];
+    let columnX = ["x", "< 9", " 9 ", " 10 ", " 11 ", " 12 ", " 13 ", " 14 ", " 15 ", " 16 ", "> 16:30"];
     subCountsByCreators.unshift(columnX);
     //generate the bar chart using billboard.js
     var chart = bb.generate({
