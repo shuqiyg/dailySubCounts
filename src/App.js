@@ -12,6 +12,7 @@ Providers.globalProvider = new Msal2Provider({
 
 function App() {
   let [dailyCounts, setDailyCounts] = useState([]);
+  let [totalSubCounts, setTotalSubCounts] = useState();
   //create 10 different time slots, and generate an array of time of creating the submissions
   let timeSlots = [];
   let x = 0;
@@ -31,9 +32,10 @@ function App() {
     axios.get("http://apps6.amfredericks.com/submissionapi/dailyCount")
   .then((response)=>{
     setDailyCounts(response.data);
-  })
-  },[])
-
+    //console.log(response.data.length);
+    setTotalSubCounts(response.data.length);
+  })},[])
+  console.log(totalSubCounts)
   //loop through the fetched time data from apps6 API, poplulate the times for each array
   dailyCounts.forEach(submission=>{
     if(!creators.includes(submission.first_name)){
@@ -93,6 +95,7 @@ useEffect(()=>{
     //generate the bar chart using billboard.js
     var chart = bb.generate({
       data: {
+        // labels: true,
         x: "x",
         columns: subCountsByCreators,
         type: bar(), // for ESM specify as: bar()
@@ -105,7 +108,7 @@ useEffect(()=>{
         },
         y: {
           type: "category",
-        }
+        },
       },
       tooltip:{
         show: true,
@@ -119,7 +122,14 @@ useEffect(()=>{
           }
         },
       },
-       
+      // regions: [
+      //   {
+      //     axis: "x",
+      //     start: 1,
+      //     end: 4,
+      //     class: "region-1-4"
+      //   }
+      // ],
       legend:{
         contents: {
           bindto: "#legend",
@@ -135,7 +145,7 @@ useEffect(()=>{
           // }
         }
       },
-      bindto: "#dataStackNormalized"
+      bindto: "#dataStackNormalized",
     });
     chart.resize({
       // width: 1000,
@@ -149,9 +159,9 @@ useEffect(()=>{
 
   return (
     <div className="App">
-      <br></br>
-      <div id='dataStackNormalized'></div>
-      <div id="legend"></div>
+        <div id="totalTag">Today's Total: {totalSubCounts}</div>
+        <div id='dataStackNormalized'></div>
+        <div id="legend"></div>
       {/* <div>
         <Login />
       </div> */}
