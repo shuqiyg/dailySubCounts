@@ -124,7 +124,7 @@ useEffect(()=>{
         position: function (data, width, height, element, pos) {
           console.log(data[0].x)
           return {
-            top: 10, left: data[0].x * 126 + 52
+            top: 10,left:pos.x
           }
         }
       },
