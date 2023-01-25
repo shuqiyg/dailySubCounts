@@ -119,8 +119,11 @@ useEffect(()=>{
           value: (value)=>{
             if(value === 0){return}
             return value
-          }
+          },
         },
+        position: function (data, width, height, element) {
+          return {x: 100, y: 100};
+        }
       },
       // regions: [
       //   {
@@ -159,9 +162,14 @@ useEffect(()=>{
 
   return (
     <div className="App">
-        <div id="totalTag">Today's Total: {totalSubCounts}</div>
-        <div id='dataStackNormalized'></div>
-        <div id="legend"></div>
+        <br></br>
+        <div>
+          <br></br>
+          <div id="totalTag">Today's Total: {totalSubCounts}</div>
+          <div id='dataStackNormalized'></div>
+          <div id="legend"></div>
+        </div>
+       
       {/* <div>
         <Login />
       </div> */}

@@ -39,10 +39,10 @@
 
 #totalTag {
   position: fixed;
-  left:80%;
-  top:10px;
+  left:70%;
+  top:20px;
   width: 130px;
-  padding: 10px;
+  padding: 5px;
   border-radius: 20px;
   margin: 0px;
   background-color: rgb(21, 221, 21);
