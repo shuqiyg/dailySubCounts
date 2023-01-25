@@ -121,18 +121,14 @@ useEffect(()=>{
             return value
           },
         },
-        position: function (data, width, height, element) {
-          return {x: 100, y: 100};
+        position: function (data, width, height, element, pos) {
+          console.log(data[0].x)
+          return {
+            top: 10, left: data[0].x * 126 + 52
+          }
         }
       },
-      // regions: [
-      //   {
-      //     axis: "x",
-      //     start: 1,
-      //     end: 4,
-      //     class: "region-1-4"
-      //   }
-      // ],
+
       legend:{
         contents: {
           bindto: "#legend",
