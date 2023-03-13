@@ -12,6 +12,7 @@ Providers.globalProvider = new Msal2Provider({
 
 function App() {
   let [dailyCounts, setDailyCounts] = useState([]);
+  let [totalSubCounts, setTotalSubCounts] = useState();
   //create 10 different time slots, and generate an array of time of creating the submissions
   let timeSlots = [];
   let x = 0;
@@ -31,9 +32,10 @@ function App() {
     axios.get("http://apps6.amfredericks.com/submissionapi/dailyCount")
   .then((response)=>{
     setDailyCounts(response.data);
-  })
-  },[])
-
+    //console.log(response.data.length);
+    setTotalSubCounts(response.data.length);
+  })},[])
+  console.log(totalSubCounts)
   //loop through the fetched time data from apps6 API, poplulate the times for each array
   dailyCounts.forEach(submission=>{
     if(!creators.includes(submission.first_name)){
@@ -89,11 +91,12 @@ function App() {
 
 
 useEffect(()=>{
-    let columnX = ["x", "< 09:00", "09:00-09:59", "10:00-10:59", "11:00-11:59", "12:00-12:59", "13:00-13:59", "14:00-14:59", "15:00-15:59", "16:00-16:30", "> 16:30"];
+    let columnX = ["x", "< 9", " 9 ", " 10 ", " 11 ", " 12 ", " 13 ", " 14 ", " 15 ", " 16 ", "> 16:30"];
     subCountsByCreators.unshift(columnX);
     //generate the bar chart using billboard.js
     var chart = bb.generate({
       data: {
+        // labels: true,
         x: "x",
         columns: subCountsByCreators,
         type: bar(), // for ESM specify as: bar()
@@ -106,7 +109,7 @@ useEffect(()=>{
         },
         y: {
           type: "category",
-        }
+        },
       },
       tooltip:{
         show: true,
@@ -117,10 +120,16 @@ useEffect(()=>{
           value: (value)=>{
             if(value === 0){return}
             return value
-          }
+          },
         },
+        position: function (data, width, height, element, pos) {
+          console.log(data[0].x)
+          return {
+            top: 10,left:pos.x
+          }
+        }
       },
-       
+
       legend:{
         contents: {
           bindto: "#legend",
@@ -136,7 +145,7 @@ useEffect(()=>{
           // }
         }
       },
-      bindto: "#dataStackNormalized"
+      bindto: "#dataStackNormalized",
     });
     chart.resize({
       // width: 1000,
@@ -150,9 +159,14 @@ useEffect(()=>{
 
   return (
     <div className="App">
-      <br></br>
-      <div id='dataStackNormalized'></div>
-      <div id="legend"></div>
+        <br></br>
+        <div>
+          <br></br>
+          <div id="totalTag">Today's Total: {totalSubCounts}</div>
+          <div id='dataStackNormalized'></div>
+          <div id="legend"></div>
+        </div>
+       
       {/* <div>
         <Login />
       </div> */}

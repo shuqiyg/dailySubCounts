@@ -37,6 +37,14 @@
   }
 }
 
-.a {
-  color: red
+#totalTag {
+  position: fixed;
+  left:70%;
+  top:20px;
+  width: 130px;
+  padding: 5px;
+  border-radius: 20px;
+  margin: 0px;
+  background-color: rgb(21, 221, 21);
+  opacity: 40%;
 }
