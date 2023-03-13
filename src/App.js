@@ -52,23 +52,24 @@ function App() {
 
     let time = submission.creationTime.slice(submission.creationTime.indexOf("T")+1)
     time = time.slice(0, 8)
-    if(time <'09:00:00'){
+    // every year we have to adjust the code cuz of eastern daylight saving time change(twice)
+    if(time <'10:00:00'){
       timeSlots[0].push(submission);
-    }else if(time <'10:00:00'){
+    }else if(time <'11:00:00'){
       timeSlots[1].push(submission);
-    }else if(time < '11:00:00'){
-      timeSlots[2].push(submission);
     }else if(time < '12:00:00'){
-      timeSlots[3].push(submission);
+      timeSlots[2].push(submission);
     }else if(time < '13:00:00'){
-      timeSlots[4].push(submission);
+      timeSlots[3].push(submission);
     }else if(time < '14:00:00'){
-      timeSlots[5].push(submission);
+      timeSlots[4].push(submission);
     }else if(time < '15:00:00'){
-      timeSlots[6].push(submission);
+      timeSlots[5].push(submission);
     }else if(time < '16:00:00'){
+      timeSlots[6].push(submission);
+    }else if(time < '17:00:00'){
       timeSlots[7].push(submission);
-    }else if(time < '16:30:00'){
+    }else if(time < '17:30:00'){
       timeSlots[8].push(submission);
     }else{
       timeSlots[9].push(submission);
